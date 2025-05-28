@@ -46,5 +46,9 @@ Should be able to update profile details
     Page Should Contain Element    xpath=//ngb-toast[@class = 'toast bg-success text-light fade show']
     Capture Page Screenshot
     Close Browser
+
+
+
+    
 *** Keywords ***
 
