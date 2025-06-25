@@ -5,7 +5,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="Robot Framework 6.0.2 (Python 3.9.7 on darwin)" name="Generator">
+<meta content="Robot Framework 4.1.3 (Python 3.9.7 on darwin)" name="Generator">
 <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKcAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAqAAAAAAAAAAAAAAAAAAAALIAAAD/AAAA4AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA4AAAAP8AAACxAAAAAAAAAKYAAAD/AAAAuwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC/AAAA/wAAAKkAAAD6AAAAzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN8AAAD/AAAA+gAAAMMAAAAAAAAAAgAAAGsAAABrAAAAawAAAGsAAABrAAAAawAAAGsAAABrAAAADAAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAAIsAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAANEAAAAAAAAA2gAAAP8AAAD6AAAAwwAAAAAAAAAAAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAFAAAAAAAAANoAAAD/AAAA+gAAAMMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAADwAAAB8AAAAAAAAAGAAAABcAAAAAAAAAH8AAABKAAAAAAAAAAAAAAAAAAAA2gAAAP8AAAD6AAAAwwAAAAAAAADCAAAA/wAAACkAAADqAAAA4QAAAAAAAAD7AAAA/wAAALAAAAAGAAAAAAAAANoAAAD/AAAA+gAAAMMAAAAAAAAAIwAAAP4AAAD/AAAA/wAAAGAAAAAAAAAAAAAAAMkAAAD/AAAAigAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAAAAAAAAIAAAAcAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAEgAAAAAAAAAAAAAA2gAAAP8AAAD7AAAAywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN4AAAD/AAAAqwAAAP8AAACvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIAAAD/AAAAsgAAAAAAAAC5AAAA/wAAAMoAAADAAAAAwAAAAMAAAADAAAAAwAAAAMAAAADAAAAAwAAAAMkAAAD/AAAAvAAAAAAAAAAAAAAAAAAAAKwAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArQAAAAAAAAAAwAMAAIABAAAf+AAAP/wAAD/8AAAgBAAAP/wAAD/8AAA//AAAJIwAADHEAAA//AAAP/wAAB/4AACAAQAAwAMAAA==">
 <style media="all" type="text/css">
 /* Generic and misc styles */
@@ -318,9 +318,6 @@ th.stats-col-graph:hover {
     top: 0;
     padding: 3px;
     cursor: default;
-}
-.element-header .label {
-    margin-right: 0.5em;
 }
 .name {
     font-weight: bold;
@@ -969,7 +966,6 @@ window.model = (function () {
     }
     function Keyword(data) {
         var kw = createModelObject(data);
-        var flatTypes = ['RETURN', 'BREAK', 'CONTINUE'];
         kw.libname = data.libname;
         kw.fullName = (kw.libname ? kw.libname + '.' : '') + kw.name;
         kw.type = data.type;
@@ -1354,8 +1350,8 @@ window.testdata = function () {
     var _statistics = null;
     var LEVELS = ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FAIL', 'SKIP'];
     var STATUSES = ['FAIL', 'PASS', 'SKIP', 'NOT RUN'];
-    var KEYWORD_TYPES = ['KEYWORD', 'SETUP', 'TEARDOWN', 'FOR', 'ITERATION', 'IF', 'ELSE IF', 'ELSE', 'RETURN',
-                         'TRY', 'EXCEPT', 'FINALLY', 'WHILE', 'CONTINUE', 'BREAK'];
+    var KEYWORD_TYPES = ['KEYWORD', 'SETUP', 'TEARDOWN', 'FOR', 'VAR', 'IF', 'ELSE IF', 'ELSE'];
+    var MESSAGE_TYPE = 8;
     function addElement(elem) {
         if (!elem.id)
             elem.id = uniqueId();
@@ -1376,10 +1372,10 @@ window.testdata = function () {
                 elapsed];
     }
     function createMessage(element, strings) {
-        return model.Message(LEVELS[element[1]],
-                             util.timestamp(element[0]),
-                             strings.get(element[2]),
-                             strings.get(element[3]));
+        return model.Message(LEVELS[element[2]],
+                             util.timestamp(element[1]),
+                             strings.get(element[3]),
+                             strings.get(element[4]));
     }
     function parseStatus(stats) {
         return STATUSES[stats[0]];
@@ -1390,7 +1386,7 @@ window.testdata = function () {
         };
     }
     function createBodyItem(parent, element, strings, index) {
-        if (element.length < 5)
+        if (element[0] == MESSAGE_TYPE)
             return createMessage(element, strings);
         var messages = util.filter(parent.children(), function (child) {
             return child.type == 'message';
@@ -1803,25 +1799,25 @@ function stopPropagation(event) {
 window.output = {};
 </script>
 <script type="text/javascript">
-window.output["suite"] = [1,2,3,4,[],[1,0,8261],[],[[5,0,6,[],[1,715,7539],[[0,7,8,0,9,10,0,0,[1,721,4843],[[724,2,11]]],[0,12,8,0,13,0,0,0,[1,5566,396],[]],[0,14,8,0,15,16,0,0,[1,5963,265],[[5967,2,17]]],[0,14,8,0,15,18,0,0,[1,6229,131],[[6234,2,19]]],[0,20,8,0,21,22,0,0,[1,6361,157],[[6364,2,23]]],[0,24,8,0,25,26,0,0,[1,6519,888],[]],[0,27,8,0,28,29,0,0,[1,7410,18],[[7427,2,30]]],[0,31,8,0,32,33,0,0,[1,7430,16],[[7445,2,34]]],[0,24,8,0,25,35,0,0,[1,7448,307],[]],[0,36,8,0,37,38,0,0,[1,7757,34],[[7790,2,39]]],[0,40,8,0,41,0,0,0,[1,7792,220],[[8011,2,42]]],[0,43,8,0,44,0,0,0,[1,8014,237],[]]]]],[],[1,1,0,0]];
+window.output["suite"] = [1,2,3,4,[],[1,0,19232],[],[[5,0,6,[],[1,1074,6690],[[0,7,8,0,9,10,0,0,[1,1074,2659],[[8,1075,2,11]]],[0,12,8,0,13,0,0,0,[1,3734,411],[]],[0,14,8,0,15,16,0,0,[1,4145,495],[]],[0,17,8,0,18,19,0,0,[1,4640,98],[[8,4640,2,20]]],[0,14,8,0,15,21,0,0,[1,4738,231],[]],[0,22,8,0,23,24,0,0,[1,4969,298],[]],[0,25,8,0,26,27,0,0,[1,5268,39],[]],[0,17,8,0,18,24,0,0,[1,5307,437],[[8,5308,2,28]]],[0,14,8,0,15,29,0,0,[1,5745,448],[]],[0,22,8,0,23,30,0,0,[1,6193,289],[]],[0,25,8,0,26,31,0,0,[1,6482,24],[]],[0,17,8,0,18,30,0,0,[1,6506,57],[[8,6506,2,32]]],[0,33,8,0,34,35,0,0,[1,6563,254],[[8,6564,2,36]]],[0,33,8,0,34,37,0,0,[1,6818,73],[[8,6818,2,38]]],[0,33,8,0,34,39,0,0,[1,6892,87],[[8,6892,2,40]]],[0,17,8,0,18,41,0,0,[1,6979,62],[[8,6979,2,42]]],[0,14,8,0,15,43,0,0,[1,7041,249],[]],[0,25,8,0,26,44,0,0,[1,7290,27],[]],[0,45,8,0,46,44,0,0,[1,7318,7],[[8,7325,2,47]]],[0,48,8,0,49,0,0,0,[1,7325,256],[[8,7581,2,50]]],[0,51,8,0,52,0,0,0,[1,7581,182],[]]]],[53,0,54,[],[1,7765,6385],[[0,7,8,0,9,10,0,0,[1,7766,2652],[[8,7767,2,11]]],[0,12,8,0,13,0,0,0,[1,10435,531],[]],[0,14,8,0,15,16,0,0,[1,10967,39],[]],[0,17,8,0,18,19,0,0,[1,11006,89],[[8,11006,2,20]]],[0,14,8,0,15,21,0,0,[1,11095,22],[]],[0,22,8,0,23,24,0,0,[1,11117,282],[]],[0,25,8,0,26,27,0,0,[1,11399,38],[]],[0,17,8,0,18,24,0,0,[1,11437,420],[[8,11438,2,28]]],[0,14,8,0,15,29,0,0,[1,11858,679],[]],[0,22,8,0,23,30,0,0,[1,12537,273],[]],[0,25,8,0,26,31,0,0,[1,12811,21],[]],[0,17,8,0,18,30,0,0,[1,12833,60],[[8,12833,2,32]]],[0,33,8,0,34,35,0,0,[1,12893,258],[[8,12894,2,36]]],[0,33,8,0,34,37,0,0,[1,13152,72],[[8,13152,2,38]]],[0,33,8,0,34,55,0,0,[1,13224,91],[[8,13225,2,56]]],[0,33,8,0,34,39,0,0,[1,13315,96],[[8,13316,2,40]]],[0,17,8,0,18,41,0,0,[1,13412,93],[[8,13412,2,42]]],[0,14,8,0,15,57,0,0,[1,13505,233],[]],[0,25,8,0,26,58,0,0,[1,13738,34],[]],[0,45,8,0,46,58,0,0,[1,13772,8],[[8,13780,2,59]]],[0,48,8,0,49,0,0,0,[1,13780,186],[[8,13966,2,60]]],[0,51,8,0,52,0,0,0,[1,13966,183],[]]]],[61,0,62,[],[1,14151,5079],[[0,7,8,0,9,10,0,0,[1,14152,2630],[[8,14152,2,11]]],[0,12,8,0,13,0,0,0,[1,16782,416],[]],[0,14,8,0,15,16,0,0,[1,17199,103],[]],[0,17,8,0,18,63,0,0,[1,17302,105],[[8,17303,2,64]]],[0,33,8,0,34,65,0,0,[1,17407,317],[[8,17408,2,66]]],[0,33,8,0,34,67,0,0,[1,17724,143],[[8,17726,2,68]]],[0,33,8,0,34,69,0,0,[1,17872,116],[[8,17873,2,70]]],[0,33,8,0,34,71,0,0,[1,17988,127],[[8,17989,2,72]]],[0,33,8,0,34,73,0,0,[1,18115,115],[[8,18116,2,74]]],[0,22,8,0,23,75,0,0,[1,18231,283],[]],[0,25,8,0,26,76,0,0,[1,18514,26],[]],[0,14,8,0,15,75,0,0,[1,18540,17],[]],[0,17,8,0,18,75,0,0,[1,18558,89],[[8,18558,2,77]]],[0,14,8,0,15,78,0,0,[1,18647,232],[]],[0,25,8,0,26,79,0,0,[1,18879,35],[]],[0,45,8,0,46,79,0,0,[1,18914,7],[[8,18921,2,80]]],[0,48,8,0,49,0,0,0,[1,18921,136],[[8,19056,2,81]]],[0,51,8,0,52,0,0,0,[1,19057,173],[]]]]],[],[3,3,0,0]];
 </script>
 <script type="text/javascript">
 window.output["strings"] = [];
 </script>
 <script type="text/javascript">
-window.output["strings"] = window.output["strings"].concat(["*","*Login","*/Users/ismail.abrahams/git-local/payflex-uat/Tests/login.robot","*Tests/login.robot","*<p>This is to test the login functionality of the application.\x3c/p>","*Should be able to login with valid credentials","*<p>This test case checks if the user can log in with valid credentials.\x3c/p>","*Open Browser","*SeleniumLibrary","*<p>Opens a new browser instance to the optional <code>url\x3c/code>.\x3c/p>","eNqzSVTIKEpNs1XKKCkpKLbS108uLS7Jz00t0itNLNErSKxMy0mt0EvO16tKhEvp5+SnZ+Yp2ZGsxUY/0U5HITmjCCgEAJjKLJI=","eNqVyz0OwyAMQOGrWFnYzF6luULPYJADSAQjY9Sf0ydT9s7ve6/OrbQEQeU9WMHFrHKwAxMINBimVnArQVben0s26+PhfZzDLqY4ybDTd6/8wSj4ozv5Kqm0Zft7WT1tDk+i6Td1","*Maximize Browser Window","*<p>Maximizes current browser window.\x3c/p>","*Input Text","*<p>Types the given <code>text\x3c/code> into the text field identified by <code>locator\x3c/code>.\x3c/p>","*id=email, pftestfred+reg050@gmail.com","*Typing text 'pftestfred+reg050@gmail.com' into text field 'id=email'.","*id=password, Test!23456","*Typing text 'Test!23456' into text field 'id=password'.","*Click Element","*<p>Click the element identified by <code>locator\x3c/code>.\x3c/p>","*xpath=(//button[normalize-space()='Login'])[1]","*Clicking element 'xpath=(//button[normalize-space()='Login'])[1]'.","*Wait Until Element Is Visible","*<p>Waits until the element <code>locator\x3c/code> is visible.\x3c/p>","*xpath=(//a[normalize-space()='Dashboard'])[1], timeout=10s","*Page Should Contain Element","*<p>Verifies that element <code>locator\x3c/code> is found on the current page.\x3c/p>","*xpath=(//a[normalize-space()='Dashboard'])[1]","*Current page contains element 'xpath=(//a[normalize-space()='Dashboard'])[1]'.","*Location Should Be","*<p>Verifies that the current URL is exactly <code>url\x3c/code>.\x3c/p>","eNqzSVTIKEpNs1XKKCkpKLbS108uLS7Jz00t0itNLNErSKxMy0mt0EvO16tKhEvppyQWZyTlJxalKNmRpc1GP9EOAKIHLOY=","eNqdyzsOgCAMANCrEBa3shtk8SSVTyBBSkpJ1NO7eQDnl7dP5thEVfIohZoqQy0WVeaYNp1F+liN8XMInZFhokDHO9V4gSd48CMTcOSDkIN2v5o16BZ4Af77NNo=","*xpath=//p[@class='email-icon'], timeout=10s","*Element Should Contain","*<p>Verifies that element <code>locator\x3c/code> contains text <code>expected\x3c/code>.\x3c/p>","*xpath=//p[@class='email-icon'], pftestfred+reg050@gmail.com","*Element 'xpath=//p[@class='email-icon']' contains text 'pftestfred+reg050@gmail.com'.","*Capture Page Screenshot","*<p>Takes a screenshot of the current page and embeds it into a log file.\x3c/p>","*\x3c/td>\x3c/tr><tr><td colspan=\"3\"><a href=\"selenium-screenshot-15.png\"><img src=\"selenium-screenshot-15.png\" width=\"800px\">\x3c/a>","*Close Browser","*<p>Closes the current browser.\x3c/p>"]);
+window.output["strings"] = window.output["strings"].concat(["*","*Booker uat","*/Users/ismail.abrahams/git-local/Restful-booker/Tests/Booker_uat.robot","*../Tests/Booker_uat.robot","*<p>This is to test the login functionality of the application.\x3c/p>","*Create a booking where the email is missing","*<p>This test case checks if correct error message is displayed\x3c/p>","*Open Browser","*SeleniumLibrary","*<p>Opens a new browser instance to the optional <code>url\x3c/code>.\x3c/p>","*<a href=\"https://automationintesting.online/\">https://automationintesting.online/\x3c/a>, chrome","*Opening browser 'chrome' to base url '<a href=\"https://automationintesting.online/\">https://automationintesting.online/\x3c/a>'.","*Maximize Browser Window","*<p>Maximizes current browser window.\x3c/p>","*Wait Until Element Is Visible","*<p>Waits until the element <code>locator\x3c/code> is visible.\x3c/p>","*xpath=//a[@class='nav-link'][normalize-space()='Rooms'], timeout=10s","*Click Element","*<p>Click the element identified by <code>locator\x3c/code>.\x3c/p>","*xpath=//button[normalize-space()='Check Availability']","*Clicking element 'xpath=//button[normalize-space()='Check Availability']'.","*xpath=(//a[@class='btn btn-primary'][normalize-space()='Book now'])[1], timeout=10","*Scroll Element Into View","*<p>Scrolls the element identified by <code>locator\x3c/code> into view.\x3c/p>","*xpath=(//a[@class='btn btn-primary'][normalize-space()='Book now'])[1]","*Wait Until Element Is Enabled","*<p>Waits until the element <code>locator\x3c/code> is enabled.\x3c/p>","*xpath=(//a[@class='btn btn-primary'][normalize-space()='Book now'])[1], timeout=5","*Clicking element 'xpath=(//a[@class='btn btn-primary'][normalize-space()='Book now'])[1]'.","*id=doReservation, timeout=10","*id=doReservation","*id=doReservation, timeout=5","*Clicking element 'id=doReservation'.","*Input Text","*<p>Types the given <code>text\x3c/code> into the text field identified by <code>locator\x3c/code>.\x3c/p>","*xpath=//input[@class='form-control room-firstname'], peter","*Typing text 'peter' into text field 'xpath=//input[@class='form-control room-firstname']'.","*xpath=//input[@class=\"form-control room-lastname\"], pan","*Typing text 'pan' into text field 'xpath=//input[@class=\"form-control room-lastname\"]'.","*xpath=//input[@class=\"form-control room-phone\"], 08765476542","*Typing text '08765476542' into text field 'xpath=//input[@class=\"form-control room-phone\"]'.","*xpath=//button[ text() = 'Reserve Now']","*Clicking element 'xpath=//button[ text() = 'Reserve Now']'.","*xpath=//li[normalize-space()='must not be empty'], timeout=10","*xpath=//li[normalize-space()='must not be empty']","*Page Should Contain Element","*<p>Verifies that element <code>locator\x3c/code> is found on the current page.\x3c/p>","*Current page contains element 'xpath=//li[normalize-space()='must not be empty']'.","*Capture Page Screenshot","*<p>Takes a screenshot of the current page and embeds it into a log file.\x3c/p>","*\x3c/td>\x3c/tr><tr><td colspan=\"3\"><a href=\"selenium-screenshot-1.png\"><img src=\"selenium-screenshot-1.png\" width=\"800px\">\x3c/a>","*Close Browser","*<p>Closes the current browser.\x3c/p>","*Create a booking with all the required information","*<p>This test case checks if the user can create a booking successfully.\x3c/p>","*xpath=//input[@class=\"form-control room-email\"], dash@gmail.com","*Typing text 'dash@gmail.com' into text field 'xpath=//input[@class=\"form-control room-email\"]'.","*xpath=//h2[normalize-space()='Booking Confirmed'], timeout=10","*xpath=//h2[normalize-space()='Booking Confirmed']","*Current page contains element 'xpath=//h2[normalize-space()='Booking Confirmed']'.","*\x3c/td>\x3c/tr><tr><td colspan=\"3\"><a href=\"selenium-screenshot-2.png\"><img src=\"selenium-screenshot-2.png\" width=\"800px\">\x3c/a>","*Should be able to Delete a booking","*<p>This test case checks if the user can delete a booking successfully.\x3c/p>","*xpath=//a[@class='nav-link'][normalize-space()='Contact']","*Clicking element 'xpath=//a[@class='nav-link'][normalize-space()='Contact']'.","*id=name, molly","*Typing text 'molly' into text field 'id=name'.","*id=email, dash@gmail.com","*Typing text 'dash@gmail.com' into text field 'id=email'.","*id=phone, 08765476542","*Typing text '08765476542' into text field 'id=phone'.","*id=subject, booking cancellation","*Typing text 'booking cancellation' into text field 'id=subject'.","*id=description, I would like to cancel my booking.","*Typing text 'I would like to cancel my booking.' into text field 'id=description'.","*xpath=//button[normalize-space()='Submit']","*xpath=//button[normalize-space()='Submit'], timeout=5","*Clicking element 'xpath=//button[normalize-space()='Submit']'.","*xpath=//h3[contains(normalize-space(), 'Thanks for getting in touch')], timeout=10","*xpath=//h3[contains(normalize-space(), 'Thanks for getting in touch')]","*Current page contains element 'xpath=//h3[contains(normalize-space(), 'Thanks for getting in touch')]'.","*\x3c/td>\x3c/tr><tr><td colspan=\"3\"><a href=\"selenium-screenshot-3.png\"><img src=\"selenium-screenshot-3.png\" width=\"800px\">\x3c/a>"]);
 </script>
 <script type="text/javascript">
-window.output["stats"] = [[{"elapsed":"00:00:08","fail":0,"label":"All Tests","pass":1,"skip":0}],[],[{"elapsed":"00:00:08","fail":0,"id":"s1","label":"Login","name":"Login","pass":1,"skip":0}]];
+window.output["stats"] = [[{"elapsed":"00:00:18","fail":0,"label":"All Tests","pass":3,"skip":0}],[],[{"elapsed":"00:00:19","fail":0,"id":"s1","label":"Booker uat","name":"Booker uat","pass":3,"skip":0}]];
 </script>
 <script type="text/javascript">
 window.output["errors"] = [];
 </script>
 <script type="text/javascript">
-window.output["baseMillis"] = 1748284549189;
+window.output["baseMillis"] = 1750870928466;
 </script>
 <script type="text/javascript">
-window.output["generated"] = 8299;
+window.output["generated"] = 19253;
 </script>
 <script type="text/javascript">
 window.output["expand_keywords"] = null;
@@ -2127,7 +2123,7 @@ function addExecutionLog(main) {
     <div class="element-header closed" onclick="toggleKeyword('${id}')">
       <div class="element-header-left" title="${type}  {{if name}}{{html fullName}}  {{/if}}[${status}]">
         <span class="elapsed" title="Elapsed time">${times.elapsedTime}</span>
-        <span class="label ${status.toLowerCase()}">${type}</span>
+        <span class="label keyword ${status.toLowerCase()}">${type}</span>
         <span>{{html assign}}</span>
         <span class="name"><span class="parent-name">{{html libname}}{{if libname}} . {{/if}}</span>{{html name}}</span>
         <span class="arg">{{html arguments}}</span>
@@ -2135,7 +2131,7 @@ function addExecutionLog(main) {
       <div class="element-header-right" onclick="stopPropagation(event)">
         <a class="expand" title="Expand all" href="javascript:expandAll('${id}')"></a>
         <a class="collapse" title="Collapse all" href="javascript:collapseAll('${id}')"></a>
-        <a class="link" title="Link to this item" href="#${id}" onclick="makeElementVisible('${id}')"></a>
+        <a class="link" title="Link to this keyword" href="#${id}" onclick="makeElementVisible('${id}')"></a>
       </div>
       <div class="element-header-toggle" title="Toggle visibility"></div>
     </div>

@@ -1,4 +1,4 @@
-# Payflex UAT Automation
+# Restful-booker Automation
 
 This project contains automated UI tests for the Payflex customer portal using [Robot Framework](https://robotframework.org/) and [SeleniumLibrary](https://robotframework.org/SeleniumLibrary/).
 
