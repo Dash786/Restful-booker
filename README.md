@@ -57,19 +57,6 @@ To run an individual test case (example):
 robot --output results/output.xml --log results/log.html --report results/report.html --test "Create a booking where the email is missing" Tests/Booker_uat.robot
 ```
 
-## Test Cases
-
-The suite in [`Tests/login.robot`](Tests/login.robot) covers:
-
-- Loading the Payflex login page
-- Logging in with valid credentials
-- Verifying dashboard access after login
-- Updating profile details
-
-The suite in [`Tests/Booker_uat.robot`](Tests/Booker_uat.robot) covers:
-
-- Creating a booking where the email is missing (validates error handling)
-- Creating a booking with all required information (validates successful booking)
 
 ## Viewing Results
 
