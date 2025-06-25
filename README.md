@@ -1,21 +1,24 @@
 # Restful-booker Automation
 
-This project contains automated UI tests for the Payflex customer portal using [Robot Framework](https://robotframework.org/) and [SeleniumLibrary](https://robotframework.org/SeleniumLibrary/).
+This project contains automated UI tests for the booker portal using [Robot Framework](https://robotframework.org/) and [SeleniumLibrary](https://robotframework.org/SeleniumLibrary/).
 
 ## Project Structure
 
 ```
-log.html
-output.xml
-README.md
-report.html
-selenium-screenshot-*.png
+results/
+    log.html
+    output.xml
+    report.html
+    selenium-screenshot-*.png
 Tests/
     login.robot
+    Booker_uat.robot
+README.md
 ```
 
 - **Tests/login.robot**: Main Robot Framework test suite for login and profile update scenarios.
-- **log.html, report.html, output.xml**: Robot Framework test execution logs and reports.
+- **Tests/Booker_uat.robot**: Test suite for booking scenarios, including negative and positive booking flows.
+- **results/**: Folder containing Robot Framework test execution logs, reports, and screenshots.
 - **selenium-screenshot-*.png**: Screenshots captured during test execution.
 
 ## Prerequisites
@@ -36,10 +39,22 @@ Tests/
 
 ## Running the Tests
 
-From the project root directory, run:
+From the project root directory, run all tests and save results to the `results` folder:
 
 ```sh
-robot login.robot
+robot --output results/output.xml --log results/log.html --report results/report.html Tests/
+```
+
+To run only the booking tests:
+
+```sh
+robot --output results/output.xml --log results/log.html --report results/report.html Tests/Booker_uat.robot
+```
+
+To run an individual test case (example):
+
+```sh
+robot --output results/output.xml --log results/log.html --report results/report.html --test "Create a booking where the email is missing" Tests/Booker_uat.robot
 ```
 
 ## Test Cases
@@ -51,19 +66,28 @@ The suite in [`Tests/login.robot`](Tests/login.robot) covers:
 - Verifying dashboard access after login
 - Updating profile details
 
+The suite in [`Tests/Booker_uat.robot`](Tests/Booker_uat.robot) covers:
+
+- Creating a booking where the email is missing (validates error handling)
+- Creating a booking with all required information (validates successful booking)
+
 ## Viewing Results
 
-- **log.html**: Detailed execution log
-- **report.html**: Summary report
-- **output.xml**: Raw output (for CI or further processing)
-- **selenium-screenshot-*.png**: Screenshots from test steps
+- **results/log.html**: Detailed execution log
+- **results/report.html**: Summary report
+- **results/output.xml**: Raw output (for CI or further processing)
+- **results/selenium-screenshot-*.png**: Screenshots from test steps
 
-Open `log.html` or `report.html` in your browser to review results.
+Open `results/log.html` or `results/report.html` in your browser to review results:
+
+```sh
+open results/report.html
+```
 
 ## Customization
 
-- Update credentials and URLs in [`Tests/login.robot`](Tests/login.robot) as needed for your environment.
-- Add more test cases by extending the Robot Framework suite.
+- Update credentials and URLs in [`Tests/login.robot`](Tests/login.robot) and [`Tests/Booker_uat.robot`](Tests/Booker_uat.robot) as needed for your environment.
+- Add more test cases by extending the Robot Framework suites.
 
 ## References
 
