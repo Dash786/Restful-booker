@@ -11,12 +11,10 @@ results/
     report.html
     selenium-screenshot-*.png
 Tests/
-    login.robot
     Booker_uat.robot
 README.md
 ```
 
-- **Tests/login.robot**: Main Robot Framework test suite for login and profile update scenarios.
 - **Tests/Booker_uat.robot**: Test suite for booking scenarios, including negative and positive booking flows.
 - **results/**: Folder containing Robot Framework test execution logs, reports, and screenshots.
 - **selenium-screenshot-*.png**: Screenshots captured during test execution.
